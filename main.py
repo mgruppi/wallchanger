@@ -62,9 +62,9 @@ def download_image(url, wall_dir, file="wall_img.jpg"):
         print(e)
 
 
-def dump_info(js, wall_dir, file="wall_img.info"):
+def dump_info(js, wall_dir, file="wall_img.log"):
     path = os.path.join(wall_dir, file)
-    with open(path, "w") as fout:
+    with open(path, "a") as fout:
         json.dump(js, fout)
 
 
