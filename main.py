@@ -53,11 +53,19 @@ def download_image(url, wall_dir, file="wall_img.jpg"):
     try:
         with open(path, "wb") as fout:
             r = requests.get(url, stream=True)
+            length = int(r.headers.get("content-length"))
             if not r.ok:
                 print(r)
                 return None
-            for block in r.iter_content(1024):
+            # Write a little progress bar
+            CHUNK_SIZE = 128
+            ticks = 100
+            progress = 0
+            for block in r.iter_content(CHUNK_SIZE):
                 fout.write(block)
+                progress += len(block)
+                print("|", "="*(int(progress/length)*ticks) + "-"*(int(1-progress/length)*ticks),
+                      "| (%d/%d)" % (progress, length), end="\r")
     except Exception as e:
         print(e)
 
@@ -80,19 +88,24 @@ def set_wallpaper(wall_path, **kwargs):
 
 
 def main():
-    # Set up path variables
-    wall_dir = os.path.join(Path.home(), ".wallpapers")
-    wall_path = os.path.join(wall_dir, "wall_img.jpg")
-    print("Wallpaper dir:", wall_dir)
-
+    # Args
     sources = ["bing", "apod"]
     parser = argparse.ArgumentParser(description="Wallpaper changer arguments.")
     parser.add_argument("--source", metavar="s", type=str, nargs=1, choices=sources,
                         default="random", help="source of wall paper (bing, apod, default: random)")
     parser.add_argument("--random", action="store_true",
                         help="choose a random picture (default: picture of the day)")
+    parser.add_argument("--wallpaper_path", type=str, help="where to save wallpapers")
 
     args = parser.parse_args()
+
+    # Set up path variables
+    if args.wallpaper_path:
+        wall_dir = args.wallpaper_path
+    else:
+        wall_dir = os.path.join(Path.home(), "Pictures")
+    wall_path = os.path.join(wall_dir, "wall_img.jpg")
+    print("Wallpaper dir:", wall_dir)
 
     if args.source == "random":
         random_choice = random.choice(sources)
