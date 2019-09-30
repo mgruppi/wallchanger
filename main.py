@@ -121,6 +121,9 @@ def main():
     # Set wallpaper
     set_wallpaper(wall_path)
 
+    for key in js:
+        print("%s: %s" % (key, js[key]))
+
 
 if __name__ == "__main__":
     main()
