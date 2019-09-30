@@ -81,10 +81,12 @@ def dump_info(js, wall_dir, file="wall_img.log"):
     # primary-color: hex-color string (e.g. '000000')
     # secondary-color: hex-color string (e.g. 'FFFFFF')
 def set_wallpaper(wall_path, **kwargs):
-    command = "gsettings set org.gnome.desktop.background picture-uri %s" % wall_path
+    gsettings_command = "gsettings set org.gnome.desktop.background "
+    os.system("%s picture-uri %s" % (gsettings_command, wall_path))
+    os.system("%s picture-options centered" % gsettings_command)
     for option in kwargs:
-        command += " %s %s" % (option, kwargs[option])
-    os.system(command)
+        os.system("%s %s %s" % (gsettings_command, option, kwargs[option]))
+
 
 
 def main():
