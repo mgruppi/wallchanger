@@ -39,7 +39,6 @@ def fetch_apod_json(hd=True, date=None, randomize=False):  # randomize will over
     else:
         s = urljoin(CONFIG["APOD_URL"], "?hd=%s&api_key=%s" % (hd, CONFIG["APOD_KEY"]))
     js = requests.get(s).json()
-    print(js)
     if hd:
         js["url"] = js["hdurl"]
     return js
@@ -83,7 +82,7 @@ def dump_info(js, wall_dir, file="wall_img.log"):
 def set_wallpaper(wall_path, **kwargs):
     gsettings_command = "gsettings set org.gnome.desktop.background "
     os.system("%s picture-uri %s" % (gsettings_command, wall_path))
-    os.system("%s picture-options centered" % gsettings_command)
+    os.system("%s picture-options zoom" % gsettings_command)
     for option in kwargs:
         os.system("%s %s %s" % (gsettings_command, option, kwargs[option]))
 
