@@ -92,7 +92,7 @@ def main():
     # Args
     sources = ["bing", "apod"]
     parser = argparse.ArgumentParser(description="Wallpaper changer arguments.")
-    parser.add_argument("--source", metavar="s", type=str, nargs=1, choices=sources,
+    parser.add_argument("--source", metavar="s", type=str, choices=sources,
                         default="random", help="source of wall paper (bing, apod, default: random)")
     parser.add_argument("--random", action="store_true",
                         help="choose a random picture (default: picture of the day)")
@@ -109,10 +109,10 @@ def main():
     print("Wallpaper dir:", wall_dir)
 
     if args.source == "random":
-        random_choice = random.choice(sources)
-    if random_choice == "bing":
+        args.source = random.choice(sources)
+    if args.source == "bing":
         js = fetch_bing_json(randomize=args.random)
-    elif random_choice == "apod":
+    elif args.source == "apod":
         js = fetch_apod_json(randomize=args.random)
 
     # Download image and info
