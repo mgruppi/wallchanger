@@ -7,7 +7,7 @@ import argparse
 import random
 from datetime import date as dt_date
 
-with open("VARIABLES.ENV") as fin:
+with open(os.path.join(Path(__file__).parent, "VARIABLES.ENV")) as fin:
     CONFIG = json.load(fin)
 
 
@@ -71,8 +71,9 @@ def download_image(url, wall_dir, file="wall_img.jpg"):
 
 def dump_info(js, wall_dir, file="wall_img.log"):
     path = os.path.join(wall_dir, file)
-    with open(path, "a") as fout:
-        json.dump(js, fout)
+    with open(path, "w") as fout:
+        for key in js:
+            fout.write("%s: %s\n" % (key, js[key]))
 
 
 # Possible kwargs for gnome3/Unity:
