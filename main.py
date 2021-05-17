@@ -36,7 +36,7 @@ def fetch_apod_json(hd=True, date=None, randomize=False):  # randomize will over
         date = get_random_date()
 
     if date:
-        s = urljoin(CONFIG["APOD_URL"], "?hd=%s&api_key=%s&date=%s" %(hd, CONFIG["APOD_KEY"], date))
+        s = urljoin(CONFIG["APOD_URL"], "?hd=%s&api_key=%s&date=%s" % (hd, CONFIG["APOD_KEY"], date))
     else:
         s = urljoin(CONFIG["APOD_URL"], "?hd=%s&api_key=%s" % (hd, CONFIG["APOD_KEY"]))
     js = requests.get(s).json()
@@ -87,7 +87,6 @@ def set_wallpaper(wall_path, **kwargs):
     os.system("%s picture-options zoom" % gsettings_command)
     for option in kwargs:
         os.system("%s %s %s" % (gsettings_command, option, kwargs[option]))
-
 
 
 def main():
