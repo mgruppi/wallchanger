@@ -8,9 +8,15 @@ import argparse
 import random
 from datetime import date as dt_date
 
-with open(os.path.join(Path(__file__).parent, "VARIABLES.ENV")) as fin:
-    CONFIG = json.load(fin)
-
+# with open(os.path.join(Path(__file__).parent, "VARIABLES.ENV")) as fin:
+#     CONFIG = json.load(fin)
+#
+# CONFIG VARIABLES
+CONFIG = {
+            "APOD_URL":"https://api.nasa.gov/planetary/apod", "APOD_KEY":"DEMO_KEY",
+            "BING_ROOT":"https://bing.com",
+            "BING_URL":"https://www.bing.com/HPImageArchive.aspx?format=js&n=1&mkt=en-US"
+        }
 
 def get_random_date():
     start = int(dt_date(2018, 1, 1).strftime("%s"))
