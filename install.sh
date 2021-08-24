@@ -18,6 +18,7 @@ read autorun
 if [ "$autorun" == 'y' ] # || [ "$autorun" == 'Y' ]
 then
   # Set up autostart config
+  mkdir -p "$HOME/.config/autostart/"
   path_startup="$HOME/.config/autostart/wallchanger.desktop"
   echo "Setting up autostart config file to $path_startup"
   echo "[Desktop Entry]
