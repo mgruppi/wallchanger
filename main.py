@@ -8,15 +8,13 @@ import argparse
 import random
 from datetime import date as dt_date
 
-# with open(os.path.join(Path(__file__).parent, "VARIABLES.ENV")) as fin:
-#     CONFIG = json.load(fin)
-#
-# CONFIG VARIABLES
+
 CONFIG = {
-            "APOD_URL":"https://api.nasa.gov/planetary/apod", "APOD_KEY":"DEMO_KEY",
-            "BING_ROOT":"https://bing.com",
-            "BING_URL":"https://www.bing.com/HPImageArchive.aspx?format=js&n=1&mkt=en-US"
+            "APOD_URL": "https://api.nasa.gov/planetary/apod", "APOD_KEY":"DEMO_KEY",
+            "BING_ROOT": "https://bing.com",
+            "BING_URL": "https://www.bing.com/HPImageArchive.aspx?format=js&n=1&mkt=en-US"
         }
+
 
 def get_random_date():
     start = int(dt_date(2018, 1, 1).strftime("%s"))
@@ -26,7 +24,7 @@ def get_random_date():
     return rand_date
 
 
-def fetch_bing_json(days_ago=0, randomize=False):  # randomize will override days_ago
+def fetch_bing_json(days_ago=0, randomize=False, mkt="en-US"):  # randomize will override days_ago
     if randomize:
         days_ago = random.randint(0, 7)  # bing provides images from up to 7 previous days
     js = requests.get(CONFIG["BING_URL"]+"&idx=%d" % days_ago).json()
@@ -103,6 +101,7 @@ def main():
                         default="random", help="source of wall paper (bing, apod, default: random)")
     parser.add_argument("--random", action="store_true",
                         help="choose a random picture (default: picture of the day)")
+    parser.add_argument("--mkt", type=str, default="en-US", help="Select the region to fetch wallpaper from.")
     parser.add_argument("--wallpaper_path", type=str, help="where to save wallpapers")
 
     args = parser.parse_args()
