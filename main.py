@@ -27,7 +27,7 @@ def get_random_date():
 def fetch_bing_json(days_ago=0, randomize=False, mkt="en-US"):  # randomize will override days_ago
     if randomize:
         days_ago = random.randint(0, 7)  # bing provides images from up to 7 previous days
-    js = requests.get(CONFIG["BING_URL"]+"&idx=%d" % days_ago).json()
+    js = requests.get(CONFIG["BING_URL"]+"&idx=%d" % days_ago + "&mkt=%s" % mkt).json()
     try:
         js["url"] = urljoin(CONFIG["BING_ROOT"], js["images"][0]["url"])
         return js
@@ -117,7 +117,7 @@ def main():
     if args.source == "random":
         args.source = random.choice(sources)
     if args.source == "bing":
-        js = fetch_bing_json(randomize=args.random)
+        js = fetch_bing_json(randomize=args.random, mkt=args.mkt)
     elif args.source == "apod":
         js = fetch_apod_json(randomize=args.random)
 
