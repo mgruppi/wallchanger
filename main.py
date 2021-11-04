@@ -24,6 +24,20 @@ def get_random_date():
     return rand_date
 
 
+def json_to_txt(data):
+    """
+    Given a JSON object `data`, return it as a text file, one line per field.
+    :param data: JSON object
+    :return: text (str) Text to display.
+    """
+
+    if "images" in data:
+        data = data["images"][0]
+
+    lines = [("%s : %s" % (k, data[k])) for k in data]
+    return "\n".join(lines)
+
+
 def fetch_bing_json(days_ago=0, randomize=False, mkt="en-US"):  # randomize will override days_ago
     if randomize:
         days_ago = random.randint(0, 7)  # bing provides images from up to 7 previous days
@@ -74,11 +88,13 @@ def download_image(url, wall_dir, file="wall_img.jpg"):
         print(e)
 
 
-def dump_info(js, wall_dir, file="wall_img.log"):
+def dump_info(text, wall_dir, file="wall_img.log"):
     path = os.path.join(wall_dir, file)
     with open(path, "w") as fout:
-        for key in js:
-            fout.write("%s: %s\n" % (key, js[key]))
+        fout.write(text)
+    # with open(path, "w") as fout:
+    #     for key in js:
+    #         fout.write("%s: %s\n" % (key, js[key]))
 
 
 # Possible kwargs for gnome3/Unity:
@@ -122,14 +138,14 @@ def main():
         js = fetch_apod_json(randomize=args.random)
 
     # Download image and info
+    text = json_to_txt(js)
+    print(text)
+
     download_image(js["url"], wall_dir)
-    dump_info(js, wall_dir)
+    dump_info(text, wall_dir)
 
     # Set wallpaper
     set_wallpaper(wall_path)
-
-    for key in js:
-        print("%s: %s" % (key, js[key]))
 
 
 if __name__ == "__main__":
