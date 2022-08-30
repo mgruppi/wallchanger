@@ -8,6 +8,7 @@ mkdir -p "$install_path"
 ln -fs "$src_path"/main.py "$install_path/wallchanger"
 
 echo "export PATH=$install_path:$PATH" >> "$HOME/.bashrc"
+export "PATH=$isntall_path:$PATH"
 
 echo "wallchanger installed successfully"
 echo "You can now run wallchanger to download and change your wallpaper"
