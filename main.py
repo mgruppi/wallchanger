@@ -76,14 +76,15 @@ def download_image(url, wall_dir, file="wall_img.jpg"):
                 print(r)
                 return None
             # Write a little progress bar
-            CHUNK_SIZE = 128
+            CHUNK_SIZE = 1048576  # size of cunks in bytes (1 MB)
             ticks = 100
             progress = 0
+            length = length//1024  # Length in KB
             for block in r.iter_content(CHUNK_SIZE):
                 fout.write(block)
-                progress += len(block)
+                progress += len(block)//1024  # Track progress in KB
                 print("|", "="*(int(progress/length)*ticks) + "-"*(int(1-progress/length)*ticks),
-                      "| (%d/%d)" % (progress, length), end="\r")
+                      "| (%d/%d KB)" % (progress, length), end="\r")
     except Exception as e:
         print(e)
 
@@ -103,7 +104,7 @@ def dump_info(text, wall_dir, file="wall_img.log"):
     # secondary-color: hex-color string (e.g. 'FFFFFF')
 def set_wallpaper(wall_path, **kwargs):
     gsettings_command = "gsettings set org.gnome.desktop.background "
-    os.system("%s picture-uri %s" % (gsettings_command, wall_path))
+    os.system("%s picture-uri file://%s" % (gsettings_command, wall_path))
     os.system("%s picture-options zoom" % gsettings_command)
     for option in kwargs:
         os.system("%s %s %s" % (gsettings_command, option, kwargs[option]))
